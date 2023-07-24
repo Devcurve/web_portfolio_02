@@ -10,9 +10,10 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: 'https://port-0-java-springboot-signup-cu6q2blkawvrek.sel4.cloudtype.app/posts',
+            //url: 'https://port-0-java-springboot-signup-cu6q2blkawvrek.sel4.cloudtype.app/posts',
+            url: 'http://localhost:8080/posts',
             method: 'POST',
-            data: postData,
+            data: JSON.stringify(postData),
             contentType: 'application/json',
             success: function () {
                 alert('글 작성이 완료되었습니다.');
