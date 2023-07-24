@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>게시판</title>
+  <title>Community</title>
   <!-- CSS 외부 파일 링크 -->
   <link rel="stylesheet" href="assets/css/styles.css ">
   <!-- JavaScript 외부 파일 링크 -->
@@ -29,6 +29,14 @@
     </tbody>
   </table>
   <button id="writeBtn">글 쓰기</button>
+
+  <script>
+    document.getElementById("writeBtn").addEventListener("click", function() {
+      window.location.href = "write_post.html";
+    });
+  </script>
+
+
 </main>
 </body>
 </html>
