@@ -39,3 +39,8 @@ $(document).ready(function () {
     // 페이지 로드 시 게시글 데이터 가져오기
     getPosts();
 });
+
+
+document.getElementById("writeBtn").addEventListener("click", function() {
+    window.location.href = "write_post.html";
+});

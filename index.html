@@ -7,12 +7,13 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
-    <title>Liberty NFT Marketplace - HTML CSS Template</title>
+    <title>Winspoon Learning Center</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/fontawesome.css">
     <link rel="stylesheet" href="assets/css/templatemo-liberty-market.css">
     <link rel="stylesheet" href="assets/css/owl.css">
@@ -20,6 +21,20 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
   </head>
 <body>
+
+  <div class="section" onclick="changeColor()">
+    <div class="container">
+      <!--img src="./assets/images/city/1.png" alt="Image 1" width="auto" height="850px"-->
+      <img src="./assets/images/city/2.png" alt="Image 2" width="1500px" height="850px">
+      <img src="./assets/images/city/3.png" alt="Image 3" width="1500px" height="850px">
+      <img src="./assets/images/city/4.png" alt="Image 4" width="1500px" height="850px">
+      <img src="./assets/images/city/5.png" alt="Image 5" width="1500px" height="850px">
+    </div>
+  </div>
+
+
+
+
 
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
@@ -33,6 +48,7 @@
     </div>
   </div>
   <!-- ***** Preloader End ***** -->
+
 
   <!-- ***** Header Area Start ***** -->
   <header class="header-area header-sticky">
@@ -491,6 +507,16 @@
   <script src="assets/js/tabs.js"></script>
   <script src="assets/js/popup.js"></script>
   <script src="assets/js/custom.js"></script>
+
+
+<script>
+  const sectionElement = document.querySelector('.section');
+
+  function changeColor() {
+    const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+    sectionElement.style.backgroundColor = randomColor;
+  }
+</script>
 
   </body>
 </html>

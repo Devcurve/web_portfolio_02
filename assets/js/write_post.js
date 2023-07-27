@@ -10,8 +10,8 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: 'https://port-0-java-springboot-signup-cu6q2blkawvrek.sel4.cloudtype.app/posts',
-            //url: 'http://localhost:8080/posts',
+            //url: 'https://port-0-java-springboot-signup-cu6q2blkawvrek.sel4.cloudtype.app/posts',
+            url: 'http://localhost:8080/posts',
             method: 'POST',
             data: JSON.stringify(postData),
             contentType: 'application/json',
@@ -30,5 +30,17 @@ $(document).ready(function () {
         if (confirm('작성을 취소하시겠습니까?')) {
             location.href = 'Community.html'; // 게시판 페이지로 이동
         }
+    });
+});
+
+
+$(document).ready(function () {
+    $("#writePostForm").submit(function (e) {
+        e.preventDefault();
+        // 게시글 전송을 처리하는 코드를 작성합니다.
+    });
+
+    $("#cancelBtn").click(function () {
+        window.location.href = "index.html";
     });
 });
