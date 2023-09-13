@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Planner</title>
+  <style>
+    /* body 스타일 */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; overflow-x: hidden; }
+    .container { max-width: 100%; margin: 0 auto; padding: 10px; }
+    .content { max-width: 800px; margin: 0 auto; }
+    table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd;padding: 10px;text-align: center; height: 10px; }
+    th { background-color: #f2f2f2; }
+    .calendar th { padding: 20px; }
+    .calendar td { height: 100px; vertical-align: top; cursor: pointer; }
+    .calendar td:nth-child(1) { color: red; }
+    .calendar td:nth-child(7) { color: blue; }
+    button { padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+    button.cancel-btn { background: #D3D3D3; }
+    .work-section { padding: 20px; background-color: #F5F5F5; max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+    .work-section * { color: black; }
+    footer { background-color: #3a3a3a; text-align: center; padding: 10px; width: 100%; }
+    input,select { font-size: 16px; height: 25px;}
+    table tr td { height: 30px; }
+
+
+    /* 메뉴바 스타일 */
+    .menu-bar { background-color: #007BFF; color: white; display: flex; justify-content: space-between; align-items: center; padding: 10px; }
+    .menu-bar .logo { font-size: 24px; font-weight: bold; }
+    .menu-bar .menu { display: flex; gap: 20px; }
+    .menu-bar .menu a { color: white; text-decoration: none; }
+
+
+    /* 두 번째 메뉴바 스타일 */
+    .sub-menu-bar { background-color: #2aacf5; display: flex; justify-content: center; align-items: center; padding: 20px; border-radius: 20px; margin: 10px 100px; }
+    .sub-menu-bar .sub-menu { display: flex; gap: 15%; font-weight: bold; margin-left: 100px;}
+    .sub-menu-bar .sub-menu a { color: black; text-decoration: none; }
+
+
+    /* 근무 관리 섹션 스타일 */
+    .work-summary { display: flex; justify-content: space-between; align-items: center; }
+    .work-summary h1 { margin: 0; }
+    .work-summary div { display: flex; flex-direction: column; align-items: flex-end; }
+    .work-summary p { margin: 0; }
+    .work-summary span { font-weight: bold; color: #007BFF; }
+
+
+    /* 근무 일정 추가 섹션 스타일 */
+    .work-schedule select { box-sizing: border-box; width: 100%; }
+    .work-schedule th, .work-schedule td { line-height: 0.5; padding: 5px 0; height: 25px; vertical-align: middle; /* 셀 내의 내용을 수직으로 중앙 정렬 */ }
+    .work-schedule th:nth-child(1), .work-schedule td:nth-child(1) { width: 15%; } /* 근무 시간 셀 */
+    .work-schedule th:nth-child(2), .work-schedule td:nth-child(2) { width: 15%; } /* 근무 시간 셀 */
+    .work-schedule th:nth-child(3), .work-schedule td:nth-child(3) { width: 7%; } /* 근무 시간 셀 */
+    .work-schedule th:nth-child(4), .work-schedule td:nth-child(4) { width: 15%; } /* 휴게 시간(분) 셀 */
+    .work-schedule th:nth-child(5), .work-schedule td:nth-child(5) { width: 7%; } /* 휴게 시간(분) 셀 */
+    .work-schedule th:nth-child(6), .work-schedule td:nth-child(6) { width: 10%; } /* 급여 셀 */
+    .work-schedule input, .work-schedule select { line-height: 50%; padding: 10px 0; height: 25px; }
+    .work-schedule input[type="time"] {
+      -webkit-appearance: none; /* 브라우저의 기본 스타일링 제거 */
+      height: 7px; }
+
+    .work-schedule td:nth-child(4) input,
+    .work-schedule td:nth-child(6) input,
+    .work-schedule td:nth-child(4) select,
+    .work-schedule td:nth-child(6) select { box-sizing: border-box; width: 80% !important; }
+  </style>
+</head>
+<body>
+<!----------- [ 메뉴바 ] -------------------------------------------------------------------------------------------------------------------------------->
+<div class="menu-bar">
+  <div class="logo">Planner</div>
+  <div class="menu">
+    <a href="#">Sign In</a>
+    <a href="https://heartfelt-taffy-bf3972.netlify.app/signup.html">Sign Up</a>
+  </div>
+</div>
+
+
+<!----------- [ 두 번째 메뉴바 ] ------------------------------------------------------------------------------------------------------------------------>
+<div class="container">
+  <div class="sub-menu-bar">
+    <div class="sub-menu">
+      <a href="https://stately-tanuki-e1598f.netlify.app/index.html">Home</a>
+      <a href="https://stately-tanuki-e1598f.netlify.app/explore.html">Portfolio</a>
+      <a href="https://stately-tanuki-e1598f.netlify.app/details.html">Learning</a>
+      <a href="https://stately-tanuki-e1598f.netlify.app/Community.html">Community</a>
+      <a href="https://stately-tanuki-e1598f.netlify.app/create.html">GitHub</a>
+    </div>
+  </div>
+</div>
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------->
+<div class="content">
+  <div class="work-summary">
+    <h1>근무 관리</h1>
+    <div>
+      <p>총 근무시간: <span id="totalWorkHours">00:00</span></p>
+      <p>총 급여: <span id="totalSalary">0원</span></p>
+    </div>
+  </div>
+  <div id="month-year">
+    <select id="year" name="year"></select>
+    <select id="month" name="month"></select>
+  </div>
+  <table id="calendar" class="calendar">
+    <tr>
+      <th>일</th>
+      <th>월</th>
+      <th>화</th>
+      <th>수</th>
+      <th>목</th>
+      <th>금</th>
+      <th>토</th>
+    </tr>
+    <!-- The dates will be added here by the JavaScript -->
+  </table>
+
+
+  <!---------------------------------------------------------------------------------------------------------------------------------------------------->
+  <div id="work-section" class="work-section">
+    <h2>근무 일정 추가</h2>
+    <table class="work-schedule">
+      <tr>
+        <th>근무 시작 시간</th>
+        <th>근무 종료 시간</th>
+        <th>근무 시간</th>
+        <th>휴게 시간(분)</th>
+        <th>급여 유형</th>
+        <th>급여</th>
+      </tr>
+      <tr>
+        <td><input type="time" id="start" name="start" onchange="calculateWorkHours()"></td>
+        <td><input type="time" id="end" name="end" onchange="calculateWorkHours()"></td>
+        <td><span id="workHours">00:00</span></td>
+        <td><input type="number" id="breakTime" name="breakTime" min="0"></td>
+        <td>
+          <select id="pay-type" name="pay-type" style="width: 80%;">
+            <option value="hourly">시급</option>
+            <option value="daily">일급</option>
+          </select>
+        </td>
+        <td><input type="number" id="pay" name="pay"></td>
+      </tr>
+    </table>
+    <button type="button" onclick="submitWorkSchedule()">추가</button>
+    <button type="button" onclick="cancelWorkSchedule()" class="cancel-btn">취소</button>
+  </div>
+</div>
+
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------->
+<footer>
+  <div class="container">
+    <p>© 2023 Planner. 모든 권리 보유.</p>
+  </div>
+</footer>
+
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------->
+<script>
+  var selectedElement, newRow, workSection;
+
+  function removePreviousWorkSection() {
+    if (selectedElement) {
+      selectedElement.classList.remove("selected");
+    }
+    if (newRow) {
+      newRow.parentNode.removeChild(newRow);
+      newRow = null;
+    }
+    if (workSection) {
+      workSection.style.maxHeight = '0px';
+    }
+  }
+
+  function selectDate(event, cell) {
+    if (cell.textContent) {
+      if (selectedElement === cell) {
+        removePreviousWorkSection();
+        selectedElement = null;
+        return;
+      }
+
+      removePreviousWorkSection();
+
+      cell.classList.add("selected");
+      selectedElement = cell;
+
+      newRow = selectedElement.parentElement.parentElement.parentElement.insertRow(selectedElement.parentElement.rowIndex + 1);
+      newRow.insertCell();
+      newRow.cells[0].colSpan = 7;
+
+      workSection = document.getElementById('work-section').cloneNode(true);
+      newRow.cells[0].appendChild(workSection);
+      workSection.style.maxHeight = '1000px';
+    }
+  }
+
+  function generateCalendar(month, year) {
+    var table = document.getElementById('calendar');
+
+    while (table.rows.length > 1) {
+      table.deleteRow(1);
+    }
+
+    var firstDay = (new Date(year, month)).getDay();
+    var daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+    var date = 1;
+    for (var i = 0; i < 6; i++) {
+      var row = table.insertRow();
+
+      for (var j = 0; j < 7; j++) {
+        if (i === 0 && j < firstDay || date > daysInMonth) {
+          var cell = row.insertCell();
+          cell.textContent = '';
+          continue;
+        }
+
+        var cell = row.insertCell();
+        var cellText = document.createTextNode(date);
+        cell.appendChild(cellText);
+        cell.onclick = function(event) {
+          selectDate(event, this);
+        };
+
+        date++;
+      }
+    }
+  }
+
+  var yearSelect = document.getElementById('year');
+  var monthSelect = document.getElementById('month');
+  for (var i = 2020; i <= 2030; i++) {
+    var option = document.createElement('option');
+    option.value = i;
+    option.textContent = i + '년';
+    yearSelect.appendChild(option);
+  }
+  for (var i = 1; i <= 12; i++) {
+    var option = document.createElement('option');
+    option.value = i;
+    option.textContent = i + '월';
+    monthSelect.appendChild(option);
+  }
+
+  yearSelect.addEventListener('change', function() {
+    removePreviousWorkSection();
+    generateCalendar(monthSelect.value - 1, yearSelect.value);
+  });
+
+  monthSelect.addEventListener('change', function() {
+    removePreviousWorkSection();
+    generateCalendar(monthSelect.value - 1, yearSelect.value);
+  });
+
+  var currentDate = new Date();
+  yearSelect.value = currentDate.getFullYear();
+  monthSelect.value = currentDate.getMonth() + 1;
+  generateCalendar(currentDate.getMonth(), currentDate.getFullYear());
+
+  function submitWorkSchedule() {
+    // 일정 추가 기능을 여기에 추가하세요.
+  }
+
+  function cancelWorkSchedule() {
+    // 취소 버튼을 클릭하면 현재의 작업 일정 섹션을 제거합니다.
+    removePreviousWorkSection();
+  }
+
+  function calculateWorkHours() {
+    var start = document.getElementById('start').value;
+    var end = document.getElementById('end').value;
+    if (start && end) {
+      var startHour = parseInt(start.split(':')[0]);
+      var endHour = parseInt(end.split(':')[0]);
+      var workHours = endHour - startHour;
+      document.getElementById('workHours').textContent = workHours + ':00';
+    }
+  }
+</script>
+</body>
+</html>
